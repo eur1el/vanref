@@ -1,15 +1,14 @@
-#Initialises Flask
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 
-#creates database
+
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
-#function creates flask application and returns
-#imports required things such as views and authentication blueprint
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "helloworld"
@@ -29,7 +28,7 @@ def create_app():
         db.create_all()
         print("Created database!")
 
-    #login manager logs users in and out of website easier, stores user information
+    
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)

@@ -6,9 +6,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from .models import User
 
 
-#wtforms is a form validator library for python
 
-#registration  form to validate usernames and emails
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -26,7 +24,6 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('That email has been used. Please choose another username.')
         
-#update account form
 class UpdateAccountForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField("Email", validators=[DataRequired(), Email()])

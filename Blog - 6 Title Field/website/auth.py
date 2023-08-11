@@ -1,6 +1,6 @@
-#contains all authentication routes
 
-#imports needed things such as render_template which allows html
+
+
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from . import db
 from .models import User
@@ -10,14 +10,14 @@ from .forms import RegistrationForm
 
 auth = Blueprint("auth", __name__)
 
-#creates login authentication route
+
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get("email")
         password = request.form.get("password")
 
-        #check if user and password exists, if not doesn't allow access
+        
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
@@ -31,8 +31,7 @@ def login():
 
     return render_template("login.html", user=current_user)
 
-#creates signup authentication route
-#uses wtforms from forms.py
+
 @auth.route("/sign-up", methods=['GET', 'POST'])
 def sign_up():
     if current_user.is_authenticated:
@@ -50,7 +49,7 @@ def sign_up():
     return render_template('signup.html', form=form, user=current_user)
         
 
-#creates logout authentication route, brings user back to home page, only if user is logged in
+
 @auth.route("/logout")
 @login_required
 def logout():

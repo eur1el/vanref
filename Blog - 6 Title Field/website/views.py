@@ -1,6 +1,6 @@
-#contains view of website
+#
 
-#imports needed things such as render_template which allows html
+#
 import os
 from pathlib import Path
 from PIL import Image
@@ -13,15 +13,14 @@ from . import db
 
 views = Blueprint("views", __name__)
 
-#doesnt allow access to home page unless logged in
-#shows posts on home template
+#
 @views.route("/")
 @views.route("/home")
 def home():
     page = Post.query.all()
     return render_template("home.html", user=current_user, posts=posts)
 
-#view/rpite for posts, orders by most recent post 
+
 @views.route("/blog")
 @login_required
 def blog():
@@ -29,7 +28,6 @@ def blog():
     posts = Post.query.order_by(Post.date_created.desc()).paginate(page=page, per_page=4)
     return render_template("blog.html", user=current_user, posts=posts)
 
-#view/route for post creation so that it can be rendered, and allow posting
 @views.route("/create-post", methods=['GET', 'POST'])
 @login_required
 def create_post():
@@ -45,7 +43,6 @@ def create_post():
 
     return render_template('create_post.html', form=form, user=current_user)
 
-#view/route that allows deletion of posts for user who posted
 @views.route("/delete-post/<id>")
 @login_required
 def delete_post(id):
@@ -62,7 +59,6 @@ def delete_post(id):
 
     return redirect(url_for('views.blog'))
 
-#view/route for specific user's posts
 @views.route("/posts/<username>")
 @login_required
 def posts(username):
@@ -75,7 +71,6 @@ def posts(username):
     posts = user.posts
     return render_template("posts.html", user=current_user, posts=posts, username=username)
 
-#view/route for creating comments
 @views.route("/create-comment/<post_id>", methods=['POST'])
 @login_required
 def create_comment(post_id):
@@ -95,7 +90,6 @@ def create_comment(post_id):
 
     return redirect(url_for('views.blog'))
 
-#view/route for deleting comments
 @views.route("/delete-comment/<comment_id>")
 @login_required
 def delete_comment(comment_id):
@@ -111,7 +105,6 @@ def delete_comment(comment_id):
 
     return redirect(url_for('views.blog'))
 
-#view/route for likes on posts
 @views.route("/like-post/<post_id>", methods=['POST'])
 @login_required
 def like(post_id):
@@ -131,7 +124,6 @@ def like(post_id):
 
     return jsonify({"likes": len(post.likes), "liked": current_user.id in map(lambda x: x.author, post.likes)})
 
-#allows for saving pictures for account profile pictures
 def save_picture(form_picture):
     path = Path("website/static/profile_pics")
     random_hex = secrets.token_hex(8)
@@ -145,7 +137,6 @@ def save_picture(form_picture):
     
     return picture_fn
     
-#view/route for account updates, updates user profile picture
 @views.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
